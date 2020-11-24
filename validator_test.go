@@ -38,20 +38,22 @@ func TestReflector(t *testing.T) {
 
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
+				So(err.Error(), ShouldEqual, "Name cannot be empty")
 			})
 		})
 	})
 
 	Convey("Given a valid struct with missing 'ID' field the validator will return an error", t, func() {
 
-		s.Name = ""
-		s.ID = 123
+		s.Name = "Test"
+		s.ID = 0
 
 		Convey("When Validator is called passing the interface", func() {
 			err := Validator(s)
 
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
+				So(err.Error(), ShouldEqual, "ID cannot be empty")
 			})
 		})
 	})
