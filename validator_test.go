@@ -8,10 +8,20 @@ import (
 
 func TestReflector(t *testing.T) {
 
+	// Dummy validator
+	v := Validator{}
+
 	// Dummy struct
 	s := struct {
 		Name string
-		ID int
+		ID   int
+	}{}
+
+	// Dummy struct 2
+	s2 := struct {
+		Name     string
+		ID       int
+		IsActive bool
 	}{}
 
 	Convey("Given a valid struct the  validator will return no errors", t, func() {
@@ -20,7 +30,7 @@ func TestReflector(t *testing.T) {
 		s.ID = 123
 
 		Convey("When Reflector is called passing the interface", func() {
-			err := Validator(s)
+			err := v.Validate(s)
 
 			Convey("Then no errors are returned", func() {
 				So(err, ShouldBeNil)
@@ -34,7 +44,7 @@ func TestReflector(t *testing.T) {
 		s.ID = 123
 
 		Convey("When Reflector is called passing the interface", func() {
-			err := Validator(s)
+			err := v.Validate(s)
 
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
@@ -48,12 +58,42 @@ func TestReflector(t *testing.T) {
 		s.Name = "Test"
 		s.ID = 0
 
-		Convey("When Validator is called passing the interface", func() {
-			err := Validator(s)
+		Convey("Validate Validator is called passing the interface", func() {
+			err := v.Validate(s)
 
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
 				So(err.Error(), ShouldEqual, "ID cannot be empty")
+			})
+		})
+	})
+
+	Convey("Given a valid struct a type that isn't in the validator the validator will return an error", t, func() {
+
+		s2.Name = "Test"
+		s2.ID = 123
+		s2.IsActive = true
+
+		Convey("Validate Validator is called passing the interface", func() {
+			err := v.Validate(s2)
+
+			Convey("Then an error is returned", func() {
+				So(err, ShouldNotBeNil)
+				So(err.Error(), ShouldEqual, "unable to determine type")
+			})
+		})
+	})
+
+	Convey("Given an invalid type the validator will return an error", t, func() {
+
+		i := "not a struct"
+
+		Convey("Validate Validator is called passing the interface", func() {
+			err := v.Validate(i)
+
+			Convey("Then an error is returned", func() {
+				So(err, ShouldNotBeNil)
+				So(err.Error(), ShouldEqual, "is not of kind struct")
 			})
 		})
 	})

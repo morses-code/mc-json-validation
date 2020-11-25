@@ -22,7 +22,9 @@ func sample() {
     	Name: "Test",
     }
 
-    err := mc-json-validation.Validator(c)
+    v := Validator{}
+
+    err := mc-json-validation.v.Validator(c)
 
     if err != nil {
         // TODO - handle the error

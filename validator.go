@@ -6,16 +6,27 @@ import (
 )
 
 var (
-	FieldCanNotBeEmpty = " cannot be empty"
+	IsNotOfKindStruct     = "is not of kind struct"
+	FieldCanNotBeEmpty    = " cannot be empty"
+	UnableToDetermineType = "unable to determine type"
 )
 
-// Validator - gets values and types of the interface
-func Validator(i interface{}) error {
+type Validator struct {
+	Fields map[string]bool
+}
+
+// Validator - gets values and types of the interface (needs to be of struct kind)
+func (n *Validator) Validate(i interface{}) error {
 	// Get interface field type
 	t := reflect.TypeOf(i)
 
 	// Get interface field value
 	v := reflect.ValueOf(i)
+
+	// Check that i is a struct
+	if t.Kind() != reflect.Struct {
+		return errors.New(IsNotOfKindStruct)
+	}
 
 	// Iterate over fields for validation (x is the index)
 	for x := 0; x < t.NumField() /* could also use v.NumField() */ ; x++ {
@@ -45,6 +56,10 @@ func validation(t reflect.Type, v reflect.Value, x int) error {
 		if val == 0 {
 			return errors.New(t.Field(x).Name + FieldCanNotBeEmpty)
 		}
+
+	// Default return, when type doesn't match any other case.
+	default:
+		return errors.New(UnableToDetermineType)
 	}
 
 	return nil
