@@ -1,4 +1,4 @@
-package mc_json_validation
+package main
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestReflector(t *testing.T) {
+func TestValidator_Validate(t *testing.T) {
 
 	// Dummy fields map
 	m := map[string]map[interface{}]string{

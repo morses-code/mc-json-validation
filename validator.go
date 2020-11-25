@@ -1,4 +1,4 @@
-package mc_json_validation
+package main
 
 import (
 	"errors"
