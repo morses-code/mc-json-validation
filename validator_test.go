@@ -9,21 +9,15 @@ import (
 func TestReflector(t *testing.T) {
 
 	// Dummy fields map
-	m := map[string]map[bool]map[interface{}]string{
+	m := map[string]map[interface{}]string{
 		"Name": {
-			true: {
-				"": "can not be empty",
-			},
+			"": "can not be empty",
 		},
 		"ID": {
-			true: {
-				0: "can not be 0",
-			},
+			0: "can not be 0",
 		},
 		"IsActive": {
-			true: {
-				false: "can not be false",
-			},
+			false: "can not be false",
 		},
 	}
 
@@ -33,21 +27,15 @@ func TestReflector(t *testing.T) {
 	}
 
 	// Dummy fields map 2
-	m2 := map[string]map[bool]map[interface{}]string{
+	m2 := map[string]map[interface{}]string{
 		"Name": {
-			false: {
-				"": "can not be empty",
-			},
+			"": "can not be empty",
 		},
 		"ID": {
-			true: {
-				0: "can not be 0",
-			},
+			0: "can not be 0",
 		},
 		"IsActive": {
-			true: {
-				false: "can not be false",
-			},
+			false: "can not be false",
 		},
 	}
 
@@ -57,21 +45,15 @@ func TestReflector(t *testing.T) {
 	}
 
 	// Dummy fields map 2
-	m3 := map[string]map[bool]map[interface{}]string{
+	m3 := map[string]map[interface{}]string{
 		"Name": {
-			true: {
-				"can not be this": "can not be 'can not be this'",
-			},
+			"can not be this": "can not be 'can not be this'",
 		},
 		"ID": {
-			true: {
-				0: "can not be 0",
-			},
+			0: "can not be 0",
 		},
 		"IsActive": {
-			true: {
-				false: "can not be false",
-			},
+			false: "can not be false",
 		},
 	}
 
@@ -82,15 +64,21 @@ func TestReflector(t *testing.T) {
 
 	// Dummy struct
 	s := struct {
-		Name string
-		ID   int
+		Name string `validate:"true"`
+		ID   int    `validate:"true"`
 	}{}
 
 	// Dummy struct 2
 	s2 := struct {
-		Name     string
-		ID       int
-		IsActive bool
+		Name     string `validate:"true"`
+		ID       int    `validate:"true"`
+		IsActive bool   `validate:"true"`
+	}{}
+
+	// Dummy struct
+	s3 := struct {
+		Name string `validate:"false"`
+		ID   int    `validate:"true"`
 	}{}
 
 	Convey("Given a valid struct the  validator will return no errors", t, func() {
@@ -169,11 +157,11 @@ func TestReflector(t *testing.T) {
 
 	Convey("Given a valid struct and the Name field is empty but flagged to skip validation", t, func() {
 
-		s.Name = ""
-		s.ID = 123
+		s3.Name = ""
+		s3.ID = 123
 
 		Convey("When Reflector is called passing the interface", func() {
-			err := v2.Validate(s)
+			err := v2.Validate(s3)
 
 			Convey("Then no errors are returned", func() {
 				So(err, ShouldBeNil)

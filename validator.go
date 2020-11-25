@@ -3,6 +3,7 @@ package mc_json_validation
 import (
 	"errors"
 	"reflect"
+	"strconv"
 )
 
 var (
@@ -11,7 +12,7 @@ var (
 )
 
 type Validator struct {
-	Fields map[string]map[bool]map[interface{}]string
+	Fields map[string]map[interface{}]string
 }
 
 // Validator - gets values and types of the interface (needs to be of struct kind)
@@ -53,24 +54,11 @@ func (n Validator) fieldIterator(t reflect.Type, x int, val interface{}) error {
 
 	// field represents the field in the struct and rules is the map for the validation logic
 	for field, rules := range n.Fields {
-		if t.Field(x).Name == field {
-			err := n.validationIterator(t, x, val, rules)
-			if err != nil {
-				return err
-			}
+		validate, err := strconv.ParseBool(t.Field(x).Tag.Get("validate"))
+		if err != nil {
+			return err
 		}
-	}
-
-	return nil
-}
-
-func (n Validator) validationIterator(t reflect.Type, x int, val interface{}, rules map[bool]map[interface{}]string) error {
-
-	// validate is the bool for if the field should be validated and the rules show the logic and contain the custom error message
-	for validate, rules := range rules {
-
-		// if validate is true this means the field requires validation
-		if validate {
+		if t.Field(x).Name == field && validate {
 			err := n.ruleIterator(t, x, val, rules)
 			if err != nil {
 				return err
