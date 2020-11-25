@@ -9,10 +9,23 @@ import (
 func TestReflector(t *testing.T) {
 
 	// Dummy fields map
-	m := make(map[string]bool)
-	m["Name"] = true
-	m["ID"] = true
-	m["IsActive"] = true
+	m := map[string]map[bool]map[interface{}]string{
+		"Name": {
+			true: {
+				"": "can not be empty",
+			},
+		},
+		"ID": {
+			true: {
+				0: "can not be 0",
+			},
+		},
+		"IsActive": {
+			true: {
+				false: "can not be false",
+			},
+		},
+	}
 
 	// Dummy validator
 	v := Validator{
@@ -20,14 +33,51 @@ func TestReflector(t *testing.T) {
 	}
 
 	// Dummy fields map 2
-	m2 := make(map[string]bool)
-	m2["Name"] = false
-	m2["ID"] = true
-	m2["IsActive"] = true
+	m2 := map[string]map[bool]map[interface{}]string{
+		"Name": {
+			false: {
+				"": "can not be empty",
+			},
+		},
+		"ID": {
+			true: {
+				0: "can not be 0",
+			},
+		},
+		"IsActive": {
+			true: {
+				false: "can not be false",
+			},
+		},
+	}
 
 	// Dummy validator 2
 	v2 := Validator{
 		Fields: m2,
+	}
+
+	// Dummy fields map 2
+	m3 := map[string]map[bool]map[interface{}]string{
+		"Name": {
+			true: {
+				"can not be this": "can not be 'can not be this'",
+			},
+		},
+		"ID": {
+			true: {
+				0: "can not be 0",
+			},
+		},
+		"IsActive": {
+			true: {
+				false: "can not be false",
+			},
+		},
+	}
+
+	// Dummy validator 2
+	v3 := Validator{
+		Fields: m3,
 	}
 
 	// Dummy struct
@@ -67,7 +117,7 @@ func TestReflector(t *testing.T) {
 
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
-				So(err.Error(), ShouldEqual, "Name cannot be empty")
+				So(err.Error(), ShouldEqual, "Name can not be empty")
 			})
 		})
 	})
@@ -82,7 +132,7 @@ func TestReflector(t *testing.T) {
 
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
-				So(err.Error(), ShouldEqual, "ID cannot be empty")
+				So(err.Error(), ShouldEqual, "ID can not be 0")
 			})
 		})
 	})
@@ -131,4 +181,17 @@ func TestReflector(t *testing.T) {
 		})
 	})
 
+	Convey("Given a valid struct and the Name field matches custom validation then validator returns an error", t, func() {
+
+		s.Name = "can not be this"
+		s.ID = 123
+
+		Convey("When Reflector is called passing the interface", func() {
+			err := v3.Validate(s)
+
+			Convey("Then no errors are returned", func() {
+				So(err, ShouldNotBeNil)
+			})
+		})
+	})
 }

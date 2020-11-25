@@ -22,11 +22,24 @@ func sample() {
     	Name: "Test",
     }
 
-    // key value represents if the field should be validated
-    m := map[string]bool {
-        "Name": true,
-        "ID":   true,
-    }
+    // key value represents if the field should be validated --- this is due for a rework but for now works.
+    m := map[string]map[bool]map[interface{}]string {
+    	"Name": {
+    		true: {
+    			"": "can not be empty",
+    		},
+    	},
+    	"ID": {
+    		true: {
+    			0: "can not be 0",
+    		},
+   		},
+   		"IsActive": {
+   			true: {
+   				false: "can not be false",
+   			},
+   		},
+   	}
 
     v := Validator{
         Fields: m,

@@ -7,12 +7,11 @@ import (
 
 var (
 	IsNotOfKindStruct     = "is not of kind struct"
-	FieldCanNotBeEmpty    = " cannot be empty"
 	UnableToDetermineType = "unable to determine type"
 )
 
 type Validator struct {
-	Fields map[string]bool
+	Fields map[string]map[bool]map[interface{}]string
 }
 
 // Validator - gets values and types of the interface (needs to be of struct kind)
@@ -42,31 +41,71 @@ func (n *Validator) Validate(i interface{}) error {
 func (n Validator) validation(t reflect.Type, v reflect.Value, x int) error {
 	val := v.Field(x).Interface()
 
-	for key, value := range n.Fields {
-		if t.Field(x).Name == key && value {
-			// Check field type
-			switch t.Field(x).Type.Name() {
+	err := n.fieldIterator(t, x, val)
+	if err != nil {
+		return err
+	}
 
-			// Validation for string fields
-			case "string":
-				if val == "" {
-					return errors.New(t.Field(x).Name + FieldCanNotBeEmpty)
-				}
+	return nil
+}
 
-			// Validation for numeric fields
-			case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "uintptr":
-				if val == 0 {
-					return errors.New(t.Field(x).Name + FieldCanNotBeEmpty)
-				}
+func (n Validator) fieldIterator(t reflect.Type, x int, val interface{}) error {
 
-			// Default return, when type doesn't match any other case.
-			default:
-				return errors.New(UnableToDetermineType)
+	// field represents the field in the struct and rules is the map for the validation logic
+	for field, rules := range n.Fields {
+		if t.Field(x).Name == field {
+			err := n.validationIterator(t, x, val, rules)
+			if err != nil {
+				return err
 			}
 		}
 	}
 
+	return nil
+}
 
+func (n Validator) validationIterator(t reflect.Type, x int, val interface{}, rules map[bool]map[interface{}]string) error {
+
+	// validate is the bool for if the field should be validated and the rules show the logic and contain the custom error message
+	for validate, rules := range rules {
+
+		// if validate is true this means the field requires validation
+		if validate {
+			err := n.ruleIterator(t, x, val, rules)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+func (n Validator) ruleIterator(t reflect.Type, x int, val interface{}, rules map[interface{}]string) error {
+
+	// rule is the value that the field should not be and the message is the message provided for the error
+	for rule, message := range rules {
+
+		// Check field type
+		switch t.Field(x).Type.Name() {
+
+		// Validation for string fields
+		case "string":
+			if val == rule {
+				return errors.New(t.Field(x).Name + " " + message)
+			}
+
+		// Validation for numeric fields
+		case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "uintptr":
+			if val == rule {
+				return errors.New(t.Field(x).Name + " " + message)
+			}
+
+		// Default return, when type doesn't match any other case.
+		default:
+			return errors.New(UnableToDetermineType)
+		}
+	}
 
 	return nil
 }
