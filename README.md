@@ -22,7 +22,15 @@ func sample() {
     	Name: "Test",
     }
 
-    v := Validator{}
+    // key value represents if the field should be validated
+    m := map[string]bool {
+        "Name": true,
+        "ID":   true,
+    }
+
+    v := Validator{
+        Fields: m,
+    }
 
     err := mc-json-validation.v.Validator(c)
 

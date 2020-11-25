@@ -8,8 +8,27 @@ import (
 
 func TestReflector(t *testing.T) {
 
+	// Dummy fields map
+	m := make(map[string]bool)
+	m["Name"] = true
+	m["ID"] = true
+	m["IsActive"] = true
+
 	// Dummy validator
-	v := Validator{}
+	v := Validator{
+		Fields: m,
+	}
+
+	// Dummy fields map 2
+	m2 := make(map[string]bool)
+	m2["Name"] = false
+	m2["ID"] = true
+	m2["IsActive"] = true
+
+	// Dummy validator 2
+	v2 := Validator{
+		Fields: m2,
+	}
 
 	// Dummy struct
 	s := struct {
@@ -94,6 +113,20 @@ func TestReflector(t *testing.T) {
 			Convey("Then an error is returned", func() {
 				So(err, ShouldNotBeNil)
 				So(err.Error(), ShouldEqual, "is not of kind struct")
+			})
+		})
+	})
+
+	Convey("Given a valid struct and the Name field is empty but flagged to skip validation", t, func() {
+
+		s.Name = ""
+		s.ID = 123
+
+		Convey("When Reflector is called passing the interface", func() {
+			err := v2.Validate(s)
+
+			Convey("Then no errors are returned", func() {
+				So(err, ShouldBeNil)
 			})
 		})
 	})
