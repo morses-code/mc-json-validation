@@ -75,9 +75,15 @@ func TestValidator_Validate(t *testing.T) {
 		IsActive bool   `validate:"true"`
 	}{}
 
-	// Dummy struct
+	// Dummy struct 3
 	s3 := struct {
 		Name string `validate:"false"`
+		ID   int    `validate:"true"`
+	}{}
+
+	// Dummy struct 4
+	s4 := struct {
+		Name string `validate:"not a bool"`
 		ID   int    `validate:"true"`
 	}{}
 
@@ -165,6 +171,20 @@ func TestValidator_Validate(t *testing.T) {
 
 			Convey("Then no errors are returned", func() {
 				So(err, ShouldBeNil)
+			})
+		})
+	})
+
+	Convey("Given a valid struct and the Name field has incorrect tag value for validate", t, func() {
+
+		s4.Name = "Test"
+		s4.ID = 123
+
+		Convey("When Reflector is called passing the interface", func() {
+			err := v2.Validate(s4)
+
+			Convey("Then no errors are returned", func() {
+				So(err, ShouldNotBeNil)
 			})
 		})
 	})
