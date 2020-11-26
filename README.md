@@ -16,40 +16,41 @@ type club struct {
 Sample code
 
 ```
-func sample() {
-    c := club{
-    	ID:   1,
-    	Name: "Test",
-    }
+type sampleStruct struct {
+	Name string `json:"name" validate:"true"`
+	ID   int	`json:"id" validate:"true"`
+}
 
-    // key value represents if the field should be validated --- this is due for a rework but for now works.
-    m := map[string]map[bool]map[interface{}]string {
-    	"Name": {
-    		true: {
-    			"": "can not be empty",
-    		},
-    	},
-    	"ID": {
-    		true: {
-    			0: "can not be 0",
-    		},
-   		},
-   		"IsActive": {
-   			true: {
-   				false: "can not be false",
-   			},
-   		},
-   	}
+func main() {
 
-    v := Validator{
-        Fields: m,
-    }
+	s := newSampleStruct()
 
-    err := mc-json-validation.v.Validator(c)
+	v := newSampleValidator()
 
-    if err != nil {
-        // TODO - handle the error
-    }
+	err := v.Validate(s)
+
+	if err != nil {
+		log.Print(err)
+	}
+
+}
+
+func newSampleStruct() sampleStruct {
+	return sampleStruct{
+		Name: "Test",
+		ID:   123,
+	}
+}
+
+func newSampleValidator() Validator {
+	return Validator{Fields: map[string]map[interface{}]string{
+		"Name": {
+			"": "can't be empty",
+		},
+		"ID": {
+			0: "can't be zero",
+		},
+	}}
 }
 ```
 
