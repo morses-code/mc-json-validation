@@ -1,13 +1,17 @@
-package main
+package sample
 
-import "log"
+import (
+	"log"
+
+	. "github.com/morses-code/mc-json-validation"
+)
 
 type sampleStruct struct {
 	Name string `json:"name" validate:"true"`
 	ID   int	`json:"id" validate:"true"`
 }
 
-func main() {
+func sampleFunc() {
 
 	s := newSampleStruct()
 

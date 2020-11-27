@@ -21,7 +21,7 @@ type sampleStruct struct {
 	ID   int	`json:"id" validate:"true"`
 }
 
-func main() {
+func sampleFunc() {
 
 	s := newSampleStruct()
 
