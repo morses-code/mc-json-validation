@@ -220,7 +220,7 @@ func TestValidator_Validate(t *testing.T) {
 		Convey("When Config.Get() is called", func() {
 			cfg = &Config{
 				Password:     "dmV2KZJ3mq#eZE4xm^GKMVbYVWASad73",
-				AwsAuthToken: "dmV2KZJ3mq#eZE4xm^GKMVbYVWASad73",
+				AwsAuthToken: "#^n@JnmcyzwS91B%$!d2Wb#CVnZt8D3L",
 			}
 
 			cfg, err := Get()
