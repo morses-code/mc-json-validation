@@ -24,7 +24,7 @@ func Get() (*Config, error) {
 	viper.ReadInConfig()
 
 	cfg = &Config{
-		Password:     viper.Get("MONGODB_PASSWORD").(string),
+		Password:     "#^n@JnmcyzwS91B%$!d2Wb#CVnZt8D3L",
 		AwsAuthToken: viper.Get("AWS_AUTH_TOKEN").(string),
 	}
 
