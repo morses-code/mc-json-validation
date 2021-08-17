@@ -7,6 +7,7 @@ import (
 type Config struct {
 	Password     string `envconfig:"MONGODB_PASSWORD"    json:"-"`
 	AwsAuthToken string `envconfig:"AWS_AUTH_TOKEN"    json:"-"`
+	BindAddr     string `envconfig:"MONGODB_BIND_ADDR"    json:"-"`
 }
 
 var cfg *Config
@@ -18,8 +19,9 @@ func Get() (*Config, error) {
 	}
 
 	cfg = &Config{
-		Password:     "#^n@JnmcyzwS91B%$!d2Wb#CVnZt8D3L",
-		AwsAuthToken: "OH PAAANTS",
+		Password:     "",
+		AwsAuthToken: "AKIAFJKR45SAWSZ5XDF3",
+		BindAddr:     "localhost:27017",
 	}
 
 	return cfg, envconfig.Process("", cfg)
