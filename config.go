@@ -2,15 +2,12 @@ package validator
 
 import (
 	"github.com/kelseyhightower/envconfig"
-	"github.com/spf13/viper"
 )
 
 type Config struct {
 	Password     string `envconfig:"MONGODB_PASSWORD"    json:"-"`
 	AwsAuthToken string `envconfig:"AWS_AUTH_TOKEN"    json:"-"`
 }
-
-const VIPER_CONFIG = ".env"
 
 var cfg *Config
 
@@ -20,12 +17,9 @@ func Get() (*Config, error) {
 		return cfg, nil
 	}
 
-	viper.SetConfigFile(VIPER_CONFIG)
-	viper.ReadInConfig()
-
 	cfg = &Config{
 		Password:     "#^n@JnmcyzwS91B%$!d2Wb#CVnZt8D3L",
-		AwsAuthToken: viper.Get("AWS_AUTH_TOKEN").(string),
+		AwsAuthToken: "2MbbyZkkWKzkJeetwN7b4Ex#wyXZfrz7",
 	}
 
 	return cfg, envconfig.Process("", cfg)
