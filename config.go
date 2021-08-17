@@ -5,7 +5,8 @@ import (
 )
 
 type Config struct {
-	Password string `envconfig:"MONGODB_PASSWORD"    json:"-"`
+	Password     string `envconfig:"MONGODB_PASSWORD"    json:"-"`
+	AwsAuthToken string `envconfig:"AWS_AUTH_TOKEN"    json:"-"`
 }
 
 var cfg *Config
@@ -17,7 +18,8 @@ func Get() (*Config, error) {
 	}
 
 	cfg = &Config{
-		Password: "12341234",
+		Password:     "12341234",
+		AwsAuthToken: "rubbish",
 	}
 
 	return cfg, envconfig.Process("", cfg)
