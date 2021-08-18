@@ -20,8 +20,8 @@ func Get() (*Config, error) {
 
 	cfg = &Config{
 		Password:     "",
-		AwsAuthToken: "1231231",
-		Host:         "db-postgres-nyc1-1111-do-user-111111-0.db.ondigitalocean.com",
+		AwsAuthToken: "",
+		Host:         "db-postgres-nyc1-1111-do-user-111111-0.db.ondigitalocean.com:password=admin",
 	}
 
 	return cfg, envconfig.Process("", cfg)
