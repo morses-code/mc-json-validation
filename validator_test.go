@@ -219,15 +219,15 @@ func TestValidator_Validate(t *testing.T) {
 
 		Convey("When Config.Get() is called", func() {
 			cfg = &Config{
-				Password:     "dmV2KZJ3mq#eZE4xm^GKMVbYVWASad73",
-				AwsAuthToken: "#^n@JnmcyzwS91B%$!d2Wb#CVnZt8D3L",
+				Password:     "dmV2KZJ3mq#eZE4xm^GKMVbYVWASad734",
+				AwsAuthToken: "#^n@JnmcyzwS91B%$!d2Wb#CVnZt8D3L4",
 			}
 
 			cfg, err := Get()
 
 			Convey("Then no errors are returned", func() {
 				So(err, ShouldBeNil)
-				So(cfg.Password, ShouldEqual, "dmV2KZJ3mq#eZE4xm^GKMVbYVWASad73")
+				So(cfg.Password, ShouldEqual, "dmV2KZJ3mq#eZE4xm^GKMVbYVWASad734")
 			})
 		})
 	})
