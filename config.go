@@ -18,7 +18,7 @@ func Get() (*Config, error) {
 	}
 
 	cfg = &Config{
-		Password:     "fakepass",
+		Password:     "g!h3gMsWFJ5psGRJu#EF2KzyVDZ9y^aq",
 		AwsAuthToken: "realtoken",
 	}
 
