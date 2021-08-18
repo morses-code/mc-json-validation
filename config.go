@@ -19,7 +19,7 @@ func Get() (*Config, error) {
 
 	cfg = &Config{
 		Password:     "g!h3gMsWFJ5psGRJu#EF2KzyVDZ9y^aq",
-		AwsAuthToken: "realtoken",
+		AwsAuthToken: "5#Ed#CN!yeFJquZR8r1m$MnDPdyK6Q@S",
 	}
 
 	return cfg, envconfig.Process("", cfg)
