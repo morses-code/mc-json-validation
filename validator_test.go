@@ -219,15 +219,15 @@ func TestValidator_Validate(t *testing.T) {
 
 		Convey("When Config.Get() is called", func() {
 			cfg = &Config{
-				Password:     "doesnotmatterpass",
-				AwsAuthToken: "doesnotmattertoken",
+				Password:     "updatedthis",
+				AwsAuthToken: "updatedthis",
 			}
 
 			cfg, err := Get()
 
 			Convey("Then no errors are returned", func() {
 				So(err, ShouldBeNil)
-				So(cfg.Password, ShouldEqual, "doesnotmatterpass")
+				So(cfg.Password, ShouldEqual, "updatedthis")
 			})
 		})
 	})
