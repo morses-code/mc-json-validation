@@ -5,8 +5,6 @@ exit-zero: false
 matches-ignore:
 - match: 6a83f3958d5017f60648b50f61e781cc988671826974ed5c492cb3590b2d8ff1
   name: Generic Password - config.go
-- match: dd9eb833b5eaa593c6c0ef5eb52f51b1030d27cf819ea521297f4893a6cc94ba
-  name: Generic Password - validator_test.go
 paths-ignore: []
 show-secrets: false
 verbose: false
