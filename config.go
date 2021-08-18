@@ -20,7 +20,7 @@ func Get() (*Config, error) {
 
 	cfg = &Config{
 		Password:     "",
-		AwsAuthToken: "",
+		AwsAuthToken: "tester",
 		Host:         "db-postgres-nyc1-1111-do-user-111111-0.db.ondigitalocean.com",
 	}
 
