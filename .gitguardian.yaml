@@ -1,10 +1,1 @@
-all-policies: false
-allow-self-signed: false
-api-url: https://api.gitguardian.com
-exit-zero: false
-matches-ignore:
-- match: 6a83f3958d5017f60648b50f61e781cc988671826974ed5c492cb3590b2d8ff1
-  name: Generic Password - config.go
-paths-ignore: []
-show-secrets: false
-verbose: false
+
